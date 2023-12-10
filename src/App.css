@@ -27,7 +27,7 @@ body {
     font-size: 25px;
     border-radius: 4px;
     position: absolute;
-    bottom: -20px;
+    bottom: -40px;
     right: 80px;
     transform: scale(1, 1);
     transition: 0.3s all ease-in-out;

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Typography, Stack } from "@mui/material";
 import Pagination from "@mui/material/Pagination";
 
@@ -7,13 +7,32 @@ import ExerciseCard from "./ExerciseCard";
 
 const Exercises = ({ setExercises, bodyPart, exercises }) => {
   const [currentPage, setCurrentPage] = useState(1);
-  const exercisesPerPage = 9;
+  const [exercisesPerPage] = useState(6);
 
   const paginate = (event, page) => {
     setCurrentPage(page);
 
     window.scrollTo({ top: 1800, behavior: "smooth" });
   };
+
+  useEffect(() => {
+    const fetchExercisesData = async () => {
+      let exercisesData = [];
+      if (bodyPart === "all") {
+        exercisesData = await fetchData(
+          "https://exercisedb.p.rapidapi.com/exercises?limit=1000",
+          exerciseOptions
+        );
+      } else {
+        exercisesData = await fetchData(
+          `https://exercisedb.p.rapidapi.com/exercises/bodyPart/${bodyPart}?limit=1000`,
+          exerciseOptions
+        );
+      }
+      setExercises(exercisesData);
+    };
+    fetchExercisesData();
+  }, [bodyPart]);
 
   const indexOfLastExercise = currentPage * exercisesPerPage;
   const indexOfFirstExercise = indexOfLastExercise - exercisesPerPage;
